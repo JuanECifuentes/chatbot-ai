@@ -153,6 +153,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Gemini Configuration
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+print("GEMINI_API_KEY:", GEMINI_API_KEY)
 LLM_MODEL = os.getenv('LLM_MODEL', 'gemini-2.0-flash-exp')
 EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL', 'models/text-embedding-004')
 EMBEDDING_DIMENSION = int(os.getenv('EMBEDDING_DIMENSION', '768'))

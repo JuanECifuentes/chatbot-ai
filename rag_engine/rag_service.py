@@ -2,6 +2,7 @@ import time
 from typing import List, Dict
 from django.conf import settings
 import google.generativeai as genai
+from pgvector.django import CosineDistance
 
 
 class GeminiService:
@@ -61,9 +62,15 @@ class RAGEngine:
         if top_k is None:
             top_k = self.top_k
 
-        chunks = DocumentChunk.objects.order_by(
-            DocumentChunk.embedding.cosine_distance(query_embedding)
-        )[:top_k]
+        # chunks = DocumentChunk.objects.order_by(
+        #     DocumentChunk.embedding.cosine_distance(query_embedding)
+        # )[:top_k]
+
+        chunks = (
+            DocumentChunk.objects
+            .annotate(distance=CosineDistance('embedding', query_embedding))
+            .order_by('distance')[:top_k]
+        )
 
         return list(chunks)
 

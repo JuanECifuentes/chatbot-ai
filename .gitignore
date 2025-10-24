@@ -44,3 +44,7 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db
+
+
+*/migrations/*
+!*/migrations/__init__.py
