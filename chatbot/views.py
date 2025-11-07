@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from chatbot.models import Conversation, Message, User
 from chatbot.serializers import (
     ConversationSerializer, ConversationListSerializer,
@@ -9,6 +9,11 @@ from chatbot.serializers import (
 )
 from rag_engine.rag_service import RAGEngine
 from rag_engine.models import RAGQueryLog
+
+
+def chat_interface(request):
+    """Render the chat interface"""
+    return render(request, 'chatbot/chat_interface.html')
 
 
 class ConversationViewSet(viewsets.ModelViewSet):

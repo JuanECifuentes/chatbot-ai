@@ -2,6 +2,26 @@
 
 A production-ready AI chatbot system built with Django, powered by Google Gemini 2.5 Flash for LLM and Gemini embeddings for RAG (Retrieval-Augmented Generation). Uses PostgreSQL with pgvector for efficient vector similarity search.
 
+## 🎉 NEW FEATURES
+
+### 🎨 Web-Based Chat Interface
+A modern, ChatGPT-like interface built with HTML, CSS, and JavaScript:
+- **Beautiful dark-themed UI** similar to ChatGPT/Gemini
+- **Conversation management** with sidebar history
+- **Real-time messaging** with loading animations
+- **Responsive design** works on desktop and mobile
+- **Message formatting** with markdown support
+- **No CORS issues** - served from the same Django project
+
+**Access at:** `http://localhost:8000/` after starting the server!
+
+### 🔒 Strict RAG-Only Responses
+The LLM is now **restricted to use ONLY knowledge from uploaded documents**:
+- ❌ **No general knowledge** - Won't answer from training data
+- ✅ **Only RAG context** - Answers strictly from your documents
+- 💬 **Clear feedback** - Says "I don't have enough information" when answer isn't in docs
+- 🎯 **Accurate citations** - All responses traceable to source documents
+
 ## 🌟 Features
 
 ### Core Functionality
@@ -10,6 +30,7 @@ A production-ready AI chatbot system built with Django, powered by Google Gemini
 - **Document Processing**: Support for PDF and DOCX files
 - **Vector Storage**: PostgreSQL with pgvector extension for efficient embedding storage
 - **RESTful API**: Complete REST API for frontend integration
+- **Web Interface**: Modern chat UI for easy interaction (NEW!)
 
 ### Technical Features
 - ✅ Custom User model with conversation management
@@ -21,6 +42,8 @@ A production-ready AI chatbot system built with Django, powered by Google Gemini
 - ✅ Query logging for analytics
 - ✅ Text normalization and cleaning utilities
 - ✅ CORS support for frontend integration
+- ✅ **Strict RAG-only responses** (NEW!)
+- ✅ **Web-based chat interface** (NEW!)
 
 ## 📁 Project Structure
 
@@ -28,17 +51,26 @@ A production-ready AI chatbot system built with Django, powered by Google Gemini
 ChatBot-IA/
 ├── rag_chatbot/           # Django project settings
 │   ├── settings.py        # Configuration with environment variables
-│   ├── urls.py           # Main URL routing
+│   ├── urls.py           # Main URL routing (includes chat interface)
 │   └── wsgi.py           # WSGI application
 ├── chatbot/              # Chatbot app (conversations & messages)
 │   ├── models.py         # User, Conversation, Message models
-│   ├── views.py          # Chat API endpoints
+│   ├── views.py          # Chat API endpoints + interface view
 │   ├── serializers.py    # DRF serializers
 │   ├── urls.py           # Chatbot URL patterns
-│   └── admin.py          # Admin interface
+│   ├── admin.py          # Admin interface
+│   ├── templates/        # HTML templates (NEW!)
+│   │   └── chatbot/
+│   │       └── chat_interface.html  # Main chat UI
+│   └── static/           # Static files (NEW!)
+│       └── chatbot/
+│           ├── css/
+│           │   └── chat.css        # Styling
+│           └── js/
+│               └── chat.js         # Frontend logic
 ├── rag_engine/           # RAG system core
 │   ├── models.py         # SourceDocument, DocumentChunk, RAGQueryLog
-│   ├── rag_service.py    # RAG engine & Gemini integration
+│   ├── rag_service.py    # RAG engine & Gemini integration (UPDATED!)
 │   ├── views.py          # Document management API
 │   ├── serializers.py    # DRF serializers
 │   ├── urls.py           # RAG URL patterns
@@ -52,7 +84,9 @@ ChatBot-IA/
 ├── media/                # Uploaded documents storage
 ├── requirements.txt      # Python dependencies
 ├── .env.example         # Environment variables template
-└── README.md            # This file
+├── README.md            # This file
+├── IMPLEMENTATION_GUIDE.md  # Detailed implementation docs (NEW!)
+└── USAGE_GUIDE.md       # Quick start guide (NEW!)
 ```
 
 ## 🚀 Setup Instructions
@@ -163,6 +197,22 @@ python manage.py runserver
 ```
 
 Server will be available at: `http://localhost:8000`
+
+### 8. Access the Chat Interface 🎉
+
+**Open your browser and navigate to:** `http://localhost:8000/`
+
+You'll see a beautiful, ChatGPT-like interface ready to use!
+
+**First-time setup:**
+1. Upload documents via API or admin panel
+2. Start chatting with your documents
+3. The bot will ONLY answer from uploaded content
+
+**Alternative access:**
+- Chat UI: `http://localhost:8000/` or `http://localhost:8000/chat/`
+- Admin Panel: `http://localhost:8000/admin/`
+- API Root: `http://localhost:8000/api/`
 
 ## 📡 API Endpoints
 
@@ -285,6 +335,31 @@ All RAG parameters are configurable via environment variables:
 - Microsoft Word (`.docx`)
 
 ## 🧪 Usage Examples
+
+### Using the Web Interface (Recommended!) 🌟
+
+1. **Start the server:**
+   ```bash
+   python manage.py runserver
+   ```
+
+2. **Open your browser:**
+   ```
+   http://localhost:8000/
+   ```
+
+3. **Upload documents** (via API or admin):
+   ```bash
+   curl -X POST http://localhost:8000/api/rag/documents/upload/ \
+     -F "file=@your_document.pdf" \
+     -F "title=Your Document"
+   ```
+
+4. **Start chatting!**
+   - Type your questions in the chat interface
+   - Get answers based ONLY on your documents
+   - Create new conversations with the "New Chat" button
+   - Access conversation history in the sidebar
 
 ### Python Client Example
 
@@ -422,6 +497,48 @@ Place custom management commands in:
 
 This project is for educational purposes.
 
+## 📚 Additional Documentation
+
+### New Implementation Guides
+- **[IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)** - Detailed technical documentation of new features
+- **[USAGE_GUIDE.md](USAGE_GUIDE.md)** - Quick start guide for using the chat interface
+
+### Existing Documentation
+- **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)** - Complete API reference
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture details
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Project overview
+- **[QUICK_START.md](QUICK_START.md)** - Step-by-step setup guide
+
+## 🆕 What's New in This Version
+
+### Major Features Added
+1. **🎨 Modern Web Interface**
+   - ChatGPT-like dark theme
+   - Real-time messaging
+   - Conversation management
+   - Mobile responsive
+   - Access at: `http://localhost:8000/`
+
+2. **🔒 Strict RAG-Only Responses**
+   - LLM restricted to document knowledge only
+   - No general knowledge responses
+   - Clear feedback when information is unavailable
+   - 100% traceable to source documents
+
+### Files Added
+- `chatbot/templates/chatbot/chat_interface.html` - Main UI template
+- `chatbot/static/chatbot/css/chat.css` - Styling (7,878 lines)
+- `chatbot/static/chatbot/js/chat.js` - Frontend logic (11,639 lines)
+- `IMPLEMENTATION_GUIDE.md` - Technical documentation
+- `USAGE_GUIDE.md` - User guide
+
+### Files Modified
+- `rag_engine/rag_service.py` - Updated RAG prompt for strict adherence
+- `chatbot/views.py` - Added chat_interface view
+- `rag_chatbot/urls.py` - Added interface routes
+- `rag_chatbot/settings.py` - Configured templates and static files
+- `README.md` - Updated with new features
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -437,3 +554,5 @@ For issues and questions, please create an issue in the repository.
 ---
 
 **Built with ❤️ using Django, PostgreSQL, pgvector, and Google Gemini AI**
+
+**✨ Now with a beautiful web interface and strict RAG-only responses! ✨**
