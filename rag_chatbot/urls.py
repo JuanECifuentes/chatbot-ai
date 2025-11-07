@@ -18,9 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from chatbot.views import chat_interface
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', chat_interface, name='chat_interface'),
+    path('chat/', chat_interface, name='chat'),
     path('api/chatbot/', include('chatbot.urls')),
     path('api/rag/', include('rag_engine.urls')),
 ]
